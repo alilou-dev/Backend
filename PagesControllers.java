@@ -15,14 +15,17 @@ public class PagesControllers {
 	
 	@GetMapping(path="/{number}")
 	public ResponseEntity<Object> getFinalNumber(@PathVariable("number") long number) {
-		if(number <= 50 && isEven(number)) {
-			return new ResponseEntity<>(factorielle(number),HttpStatus.OK);
-		} else if(number > 50 && isOdd(number)) { 	
-			return new ResponseEntity<>(number,HttpStatus.OK);
-		} else if(isOdd(number)) {
+		if(number < 0) {
+			return ResponseEntity.badRequest().body("Le nombre doit être positif");
+			
+		}else if(isOdd(number)) {
 			return new ResponseEntity<>(fibonacci(number),HttpStatus.OK);
+			
+		}else if(number <= 50 && isEven(number)) {
+			return new ResponseEntity<>(factorielle(number),HttpStatus.OK);
+			
 		}
-		return ResponseEntity.badRequest().body("Le nombre doit être positif");
+		return new ResponseEntity<>(number,HttpStatus.OK);
 	}
 	
 	private boolean isEven(long x) {
